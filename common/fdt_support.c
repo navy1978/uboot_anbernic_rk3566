@@ -11,6 +11,7 @@
 #include <exports.h>
 #include <fdt_support.h>
 #include <fdtdec.h>
+#include <version.h>
 #include <inttypes.h>
 #ifdef CONFIG_MTD_BLK
 #include <mtd_blk.h>
@@ -377,6 +378,11 @@ int fdt_chosen(void *fdt)
 	if (dump)
 		printf("## Merged bootargs: %s\n", env_get("bootargs"));
 
+#ifdef CONFIG_ANBERNIC_ARC_SD_ONLY
+	err = fdt_setprop_string(fdt, nodeoffset, "u-boot,version", PLAIN_VERSION);
+	if (err < 0)
+		return err;
+#endif
 	return fdt_fixup_stdout(fdt, nodeoffset);
 }
 

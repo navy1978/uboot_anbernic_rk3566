@@ -68,7 +68,9 @@
 
 #ifndef CONFIG_SPL_BUILD
 /* usb mass storage */
+#ifndef CONFIG_ANBERNIC_ARC_SD_ONLY
 #define CONFIG_USB_FUNCTION_MASS_STORAGE
+#endif
 #define CONFIG_ROCKUSB_G_DNL_PID	0x350a
 
 #define ENV_MEM_LAYOUT_SETTINGS \
@@ -90,10 +92,17 @@
 	BOOTENV
 
 #undef RKIMG_BOOTCOMMAND
+#ifdef CONFIG_ANBERNIC_ARC_SD_ONLY
+#define RKIMG_BOOTCOMMAND \
+	"setenv devtype mmc; setenv devnum 1; " \
+	"setenv distro_bootpart 3; run bootcmd_mmc1; " \
+	"echo ARC-D SD boot failed; while true; do sleep 1; done"
+#else
 #define RKIMG_BOOTCOMMAND		\
 	"boot_fit;"			\
 	"boot_android ${devtype} ${devnum};" \
 	"setenv distro_bootpart 3&&run distro_bootcmd;"
+#endif
 #else
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	ENV_MEM_LAYOUT_SETTINGS \
@@ -111,7 +120,9 @@
 #endif
 
 /* rockchip ohci host driver */
+#ifndef CONFIG_ANBERNIC_ARC_SD_ONLY
 #define CONFIG_USB_OHCI_NEW
+#endif
 #define CONFIG_SYS_USB_OHCI_MAX_ROOT_PORTS	1
 
 #define CONFIG_LIB_HW_RAND

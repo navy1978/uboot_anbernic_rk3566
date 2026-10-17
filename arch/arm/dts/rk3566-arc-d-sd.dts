@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: GPL-2.0+
+
+#include "rk3568-evb.dts"
+
+/ {
+	model = "Anbernic RG ARC-D SD boot probe";
+	compatible = "anbernic,rg-arc-d", "rockchip,rk3566";
+
+	chosen {
+		u-boot,spl-boot-order = &sdmmc0;
+	};
+};
+
+&sdhci {
+	status = "disabled";
+	/delete-property/ u-boot,dm-spl;
+};
+
+&sdmmc1 {
+	status = "disabled";
+	/delete-property/ u-boot,dm-spl;
+};
+
+&nandc0 {
+	status = "disabled";
+	/delete-property/ u-boot,dm-spl;
+};
+
+&sfc {
+	status = "disabled";
+	/delete-property/ u-boot,dm-spl;
+};

@@ -363,6 +363,14 @@ static void cmdline_handle(void)
 
 int board_late_init(void)
 {
+#ifdef CONFIG_ANBERNIC_ARC_SD_ONLY
+	/* Exclude Android BCB, download, charging and recovery boot paths. */
+	if (!rockchip_get_bootdev())
+		hang();
+	env_fixup();
+	env_set("fdtfile", "rk3566-arc-d-sd-probe.dtb");
+	return rk_board_late_init();
+#endif
 	rockchip_set_ethaddr();
 	rockchip_set_serialno();
 	setup_download_mode();

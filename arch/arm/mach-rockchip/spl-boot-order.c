@@ -142,6 +142,19 @@ void board_boot_order(u32 *spl_boot_list)
 	int node;
 	const char *conf;
 
+#ifdef CONFIG_ANBERNIC_ARC_SD_ONLY
+	/* Keep alias numbering explicit even though the eMMC node is disabled. */
+	node = fdt_path_offset(blob, "/dwmmc@fe2b0000");
+	boot_device = node < 0 ? -ENOENT : spl_node_to_boot_device(node);
+	if (boot_device < 0) {
+		puts("ARC-D SPL: SD unavailable; stopping\n");
+		hang();
+	}
+	spl_boot_list[0] = boot_device;
+	spl_boot_list[1] = BOOT_DEVICE_NONE;
+	return;
+#endif
+
 	if (chosen_node < 0) {
 		debug("%s: /chosen not found, using spl_boot_device()\n",
 		      __func__);

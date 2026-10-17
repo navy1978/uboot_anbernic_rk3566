@@ -74,12 +74,16 @@
 	#define BOOT_TARGET_DHCP(func)
 #endif
 
+#ifdef CONFIG_ANBERNIC_ARC_SD_ONLY
+#define BOOT_TARGET_DEVICES(func) func(MMC, mmc, 1)
+#else
 #define BOOT_TARGET_DEVICES(func) \
 	BOOT_TARGET_MMC(func) \
 	BOOT_TARGET_RKNAND(func) \
 	BOOT_TARGET_USB(func) \
 	BOOT_TARGET_PXE(func) \
 	BOOT_TARGET_DHCP(func)
+#endif
 
 #ifdef CONFIG_ARM64
 #define ROOT_UUID "B921B045-1DF0-41C3-AF44-4C6F280D3FAE;\0"
@@ -122,7 +126,10 @@
 	"name=security,size=2M,uuid=${uuid_gpt_security};" \
 	"name=userdata,size=-,uuid=${uuid_gpt_userdata};\0"
 
-#ifdef CONFIG_DM_RAMDISK
+#ifdef CONFIG_ANBERNIC_ARC_SD_ONLY
+#define RKIMG_DET_BOOTDEV \
+	"rkimg_bootdev=setenv devtype mmc; setenv devnum 1;\0"
+#elif defined(CONFIG_DM_RAMDISK)
 #define RKIMG_DET_BOOTDEV \
 	"rkimg_bootdev=" \
 	"setenv devtype ramdisk; setenv devnum 0; \0"

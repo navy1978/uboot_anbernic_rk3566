@@ -6,6 +6,14 @@ config TARGET_EVB_RK3568
 	help
 	  RK3568 EVB is a evaluation board for Rockchp RK3568.
 
+config ANBERNIC_ARC_SD_ONLY
+	bool "Confine the Anbernic ARC-D boot probe to SD"
+	depends on TARGET_EVB_RK3568
+	help
+	  Restrict the ARC-D bring-up loader to the removable SD card.
+	  Do not follow Android boot modes or preloader eMMC selections.
+	  The dedicated device tree must also disable internal storage.
+
 config SYS_SOC
 	default "rockchip"
 

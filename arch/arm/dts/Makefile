@@ -466,3 +466,5 @@ dtbs: $(addprefix $(obj)/, $(dtb-y))
 	@:
 
 clean-files := *.dtb
+
+dtb-y += rk3566-arc-d-sd.dtb
